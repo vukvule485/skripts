@@ -1,0 +1,17 @@
+command /superfly:
+    trigger:
+        if command sender is console:
+            send "&2&lSuperUtility &8» &aThis command can only be executed by a player!"
+        if command sender is player:
+            if {flight::%player's uuid%} is not set:
+            set {flight::%player's uuid%} to true
+            set player's flight mode to true
+            send "&2&lSuperUtility &8» &aYour flight mode was &benabled&a!"
+command /superunfly:
+    trigger:
+        if command sender is console:
+            send "&2&lSuperUtility &8» &aThis command can only be executed by a player!"
+        if command sender is player:
+            set player's flight mode to false
+            delete {flight::%player's uuid%}
+            send "&2&lSuperUtility &8» &aYour flight mode was &bdisabled&a!"

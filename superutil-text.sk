@@ -1,0 +1,24 @@
+command /supertext [<player>] [<text>]:
+  aliases: /stext, /st
+  usage: &cNot enough arguments. /text (player) (message)
+  trigger:
+    set {text} to difference between {text.%player%} and now
+    if {text} is less than 5 seconds:
+      send "&cYou must wait &4%difference between {text} and 5 seconds% &cbefore messaging again!"
+      stop
+    set {text.%player%} to now
+    if arg-1 is set:
+      if arg-2 is set:
+        send "&9%player% &b> &9You &b| %coloured arg-2%" to arg-1
+        send "&9You &b> %arg-1% &b| %coloured arg-2%" to player
+      else:
+        send "&cNot enough arguments. /text (player) (message)"
+    else:
+      send "&cNot enough arguments. /text (player) (message)"
+    loop all players:
+      if loop-player has permission "skript.messagesee":
+        send "&9%player% &bhas messaged &9%arg-1%&b: %coloured arg-2%"
+        if arg-1 is online:
+          send "&9You &b> %arg-1% &b| %coloured arg-2%" to player
+        else:
+          send "&cThis player doesn't exist!"

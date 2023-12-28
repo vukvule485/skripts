@@ -1,0 +1,37 @@
+command /supertpa [<player>]:
+    trigger:
+        if arg-1 is set:
+            if arg-1 is online:
+                if {tpalist::*} contains arg-1:
+                    send "&a%arg-1% &falready have a tpa request pending."
+                else:
+                    if arg-1 is player:
+                        send "&fThis is &ayou!"
+                    else:
+                        add arg-1 to {tpalist::*}
+                        add player to {tpalist.%arg-1%::*}
+                        send "&bYou have a tpa request.%newline%&aType /supertpaccept to accept it.%newline%&cType /supertpdeny to deny it." to arg-1
+                        send "&fYou have sent a tpa request to &a%arg-1%." to player
+            else:
+                send "&a%arg-1% &fis &coffline."
+        else:
+            send "&fPlease define a &aplayer."
+
+command /supertpaccept:
+    trigger:
+        if {tpalist::*} contains player:
+            send "&aAccepting &ftpa request..."
+            remove player from {tpalist::*}
+            send "&fYou have accepted &a%player%&f's tpa request." to player
+            wait 1 second
+            teleport {tpalist.%player%::*} to player
+        else:
+            send "&fYou have &cno &ftpa requests."
+command /supertpdeny:
+    trigger:
+        if {tpalist::*} contains player:
+            send "&cDenying &ftpa request..."
+            remove player from {tpalist::*} 
+            send "&fYou have &cdenied &a%player%&f's tpa request." to player
+        else:
+            send "&fYou have &cno &ftpa requests."

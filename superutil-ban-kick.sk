@@ -1,0 +1,236 @@
+command /superban [<offlineplayer>] [<text>]:
+    trigger:
+        if player does not have permission "ban.use":
+            send "&cYou are not permitted to run this command!"
+            stop
+        if arg-1 is not set:
+            send "&c/ban (player) [reason] [-s]"
+            stop
+        if arg-1 has permission "ban.use":
+            send "&cThat player cannot be banned!"
+            stop
+        if player is not set:
+            set {_p} to "CONSOLE"
+        else:
+            set {_p} to player
+        if arg-1 is banned:
+            send "&cThat player is already banned!"
+            stop
+        if arg-2 is not set:
+            set {_r} to "N/A"
+        else:
+            set {_r} to arg-2
+        if {_r} contains "-s":
+            replace all " -s" and "-s " with "" in {_r}
+            set {_silent} to true
+        if {_silent} is set:
+            loop all players:
+                if loop-player has permission "ban.use":
+                    send "&7&o(SILENT) &b%{_p}% &7banned &b%arg-1% &7for &c%{_r}% &7[FOREVER]" to loop-player
+        else:
+            broadcast "&b%{_p}% &7banned &b%arg-1% &7for &c%{_r}% &7[FOREVER]"
+        ban arg-1 due to {_r}
+        if arg-1 is online:
+            kick arg-1 due to "&7You are now banned! &bReason: &7%{_r}%"
+        add arg-1 to {banlist::*}
+        
+command /superkick [<player>] [<text>]:
+    trigger:
+        if player does not have permission "kick.use":
+            send "&cYou are not permitted to run this command!"
+            stop
+        if arg-1 is not set:
+            send "&c/kick (player) [reason] [-s]"
+            stop
+        if arg-1 has permission "kick.use":
+            send "&cThat player cannot be kicked!"
+            stop
+        if arg-2 is not set:
+            set {_r} to "N/A"
+        else:
+            set {_r} to arg-2
+        if player is not set:
+            set {_p} to "CONSOLE"
+        else:
+            set {_p} to player
+        if {_r} contains "-s":
+            replace all " -s" and "-s " with "" in {_r}
+            set {_silent} to true
+        if {_silent} is set:
+            loop all players:
+                if loop-player has permission "ban.use":
+                    send "&7&o(SILENT) &b%{_p}% &7kicked &b%arg-1% &7for &c%{_r}%" to loop-player
+        else:
+            broadcast "&b%{_p}% &7kicked &b%arg-1% &7for &c%{_r}%"
+        kick arg-1 due to "&7You were kicked! &bReason: &7%{_r}%"
+        
+command /supertempban [<offlineplayer>] [<text>] [<timespan>]:
+    trigger:
+        if player does not have permission "tempban.use":
+            send "&cYou are not permitted to run this command!"
+            stop
+        if arg-2 is not set:
+            send "&c/tempban (player) [reason] [-s] (time)"
+            stop
+        if arg-1 has permission "tempban.use":
+            send "&cThat player cannot be banned!"
+            stop
+        if player is not set:
+            set {_p} to "CONSOLE"
+        else:
+            set {_p} to player
+        if arg-1 is banned:
+            send "&cThat player is already banned!"
+            stop
+        if arg-2 is not set:
+            set {_r} to "N/A"
+        else:
+            set {_r} to arg-2
+        set {_l} to "%arg-3%"
+        set {_l} to "%capitalized {_l}%"
+        if {_r} contains "-s":
+            replace all " -s" and "-s " with "" in {_r}
+            set {_silent} to true
+        if {_silent} is set:
+            loop all players:
+                if loop-player has permission "tempban.use":
+                    send "&7&o(SILENT) &b%{_p}% &7banned &b%arg-1% &7for &c%{_r}% &7[%{_l}%]" to loop-player
+        else:
+            broadcast "&b%{_p}% &7banned &b%arg-1% &7for &c%{_r}% &7[%{_l}%]"
+        ban arg-1 due to {_r}
+        if arg-1 is online:
+            kick arg-1 due to "&7You are now banned! &bReason: &7%{_r}% &f &f &f &f &bLength: &7%arg-3%"
+        add arg-1 to {banlist::*}
+        set {%arg-1%.banned} to now
+        set {%arg-1%.length} to arg-3
+        
+command /superbroadcast [<text>]:
+    aliases: /bc, /announce, /a
+    trigger:
+        if player does not have permission "broadcast.use":
+            send "&cYou are not permitted to run this command!"
+            stop
+        broadcast ""
+        broadcast "&b&lALERT &8>> &7%colored arg-1%"
+        broadcast ""
+        loop all players:
+            if loop-player has permission "broadcast.use":
+                if loop-player is not player:
+                    if player is a player:
+                        set {_p} to player
+                    else:
+                        set {_p} to "CONSOLE"
+                    send "&b%{_p}%&7 used broadcast!" to loop-player
+command /supermute [<offlineplayer>] [<text>] [<timespan>]:
+    trigger:
+        if player does not have permission "mute.use":
+            send "&cYou are not permitted to run this command!"
+            stop
+        if arg-2 is not set:
+            send "&c/mute (player) [reason] [-s] (time)"
+            stop
+        if arg-1 has permission "mute.use":
+            send "&cThat player cannot be muted!"
+            stop
+        if player is not set:
+            set {_p} to "CONSOLE"
+        else:
+            set {_p} to player
+        if {%arg-1%.muted} is set:
+            send "&cThat player is already muted!"
+            stop
+        if arg-2 is not set:
+            set {_r} to "N/A"
+        else:
+            set {_r} to arg-2
+        set {_l} to "%arg-3%"
+        set {_l} to "%capitalized {_l}%"
+        if {_r} contains "-s":
+            replace all " -s" and "-s " with "" in {_r}
+            set {_silent} to true
+        if {_silent} is set:
+            loop all players:
+                if loop-player has permission "mute.use":
+                    send "&7&o(SILENT) &b%{_p}% &7muted &b%arg-1% &7for &c%{_r}% &7[%{_l}%]" to loop-player
+        else:
+            broadcast "&b%{_p}% &7muted &b%arg-1% &7for &c%{_r}% &7[%{_l}%]"
+        set {muted.%arg-1%} to true
+        add arg-1 to {mutelist::*}
+        set {%arg-1%.muted} to now
+        set {%arg-1%.mutelength} to arg-3
+        
+command /superunmute [<offlineplayer>] [<text>]:
+    trigger:
+        if player does not have permission "mute.use":
+            send "&cYou are not permitted to run this command!"
+            stop
+        if arg-1 is not set:
+            send "&c/mute (player) [-s]"
+            stop
+        if arg-1 has permission "mute.use":
+            send "&cYou cannot unmute this player!"
+            stop
+        if player is not set:
+            set {_p} to "CONSOLE"
+        else:
+            set {_p} to player
+        if {%arg-1%.muted} is not set:
+            send "&cThat player is not muted!"
+            stop
+        if {_r} contains "-s":
+            replace all " -s" and "-s " with "" in {_r}
+            set {_silent} to true
+        if {_silent} is set:
+            loop all players:
+                if loop-player has permission "mute.use":
+                    send "&7&o(SILENT) &b%{_p}% &7unmuted &b%arg-1%" to loop-player
+        else:
+            broadcast "&b%{_p}% &7unmuted &b%arg-1%"
+        clear {muted.%arg-1%}
+        remove arg-1 from {mutelist::*}
+        clear {%arg-1%.muted}
+        clear {%arg-1%.mutelength} 
+        
+every 1 second:
+    loop {banlist::*}:
+        if {%loop-value%.banned} is set:
+            if difference between now and {%loop-value%.banned} >= {%loop-value%.length}:
+                unban loop-value
+                remove loop-value from {banlist::*}
+                clear {%loop-value%.banned}
+                clear {%loop-value%.length}
+    loop {mutelist::*}:
+        if {%loop-value%.muted} is set:
+            if difference between now and {%loop-value%.muted} >= {%loop-value%.mutelength}:
+                unban loop-value
+                clear {muted.%loop-value%}
+                remove loop-value from {mutelist::*}
+                clear {%loop-value%.muted}
+                clear {%loop-value%.mutelength}
+        
+command /superunban [<offlineplayer>] [<text>]:
+    trigger:
+        if player does not have permission "unban.use":
+            send "&cYou are not permitted to run this command!"
+            stop
+        if arg-1 is not set:
+            send "&c/unban (player) [-s]"
+            stop
+        if player is not set:
+            set {_p} to "CONSOLE"
+        else:
+            set {_p} to player
+        if arg-1 is not banned:
+            send "&cThat player is not banned!"
+            stop
+        if arg-2 contains "-s":
+            replace all " -s" and "-s " with "" in {_r}
+            set {_silent} to true
+        if {_silent} is set:
+            loop all players:
+                if loop-player has permission "ban.use":
+                    send "&7&o(SILENT) &b%{_p}% &7unbanned &b%arg-1%" to loop-player
+        else:
+            broadcast "&b%{_p}% &7unbanned &b%arg-1%"
+        unban arg-1
+        remove arg-1 from {banlist::*}

@@ -1,0 +1,43 @@
+command /supersethome [<string>]:
+	trigger:
+		if arg is not set:
+			set {homes::%player's uuid%::home} to player's location
+			send "&aDefault home set to your location"
+		else:
+			set {homes::%player's uuid%::%arg%} to player's location
+			send "&aHome &2&o%arg% &aset to your location"
+
+command /superhomes:
+	trigger:
+		if {homes::%player's uuid%::*} is set:
+			send "&aListing your homes"
+			loop {homes::%player's uuid%::*}:
+				send "&7- %loop-index%"
+		else:
+			send "&cYou have no homes set!"
+
+command /superdelhome [<string>]:
+	trigger:
+		if arg is set:
+			if {homes::%player's uuid%::%arg%} is set:
+				delete {homes::%player's uuid%::%arg%}
+				send "&aHome &2&o%arg% &adeleted"
+			else:
+				send "&cThis home doesn't exist!"
+		else:
+			send "&aWhich home would you like to delete? Use &2&o/homes &ato list your homes"
+
+command /superhome [<string>]:
+	trigger:
+		if arg is set:
+			if {homes::%player's uuid%::%arg%} is set:
+				teleport player to {homes::%player's uuid%::%arg%}
+				send "&aTeleported to &2&o%arg%"
+			else:
+				send "&cThis home doesn't exist!"
+		else:
+			if {homes::%player's uuid%::home} is set:
+				teleport player to {homes::%player's uuid%::home}
+				send "&aTeleported to &2&ohome"
+			else:
+				send "&cYou do not have a default home set"

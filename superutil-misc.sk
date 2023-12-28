@@ -1,0 +1,13 @@
+# About Command
+command /superabout:
+    trigger:
+        broadcast "&a----------------------------------------------"
+        broadcast "&cAbout &1SuperUtility&1:"
+        broadcast "&cSuperUtility is a short utility that can be used for multiple purposes that is made in Skript."
+        broadcast "&cSuperUtility v1.0.0 by ItsGuestyYT"
+        broadcast "&a----------------------------------------------"
+command /superhelp:
+    trigger:
+        broadcast "&a-------------------Help---Help------------------------"
+        broadcast "/superabout, /superhome (home name), /superhomes, /superdelhome (home name), /supersethome (home name), /superfly, /superunfly, /supertpa, /supertpaccept, /supertpdeny, /supertext (player name) (message), /supermute (player name) (reason), /superunmute (player), /superkick (player), /supertempban (player) (reason) (duration), /superunban (player), /superwarn (player) (reason), /superunwarn (player), /supercheckwarns (player), /superclearwarns (player), /superhelp"
+        broadcast "&a-----------------------------------------------------"

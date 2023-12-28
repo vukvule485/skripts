@@ -1,0 +1,56 @@
+variables:
+  {warns}  = 0
+
+# Warn Command
+command /superwarn <offline player> <text>:
+  permission: warn.sk
+  permission message: &4&lYou do not have permission to use this command!
+  trigger:
+    if arg-1 is set:
+      if arg-2 is set:
+        add 1 to {warns.%arg-1's uuid%}
+        broadcast "&a----------------------------------------------"
+        broadcast "&c[&6Warning System&c] &6%player% &cwarned &6%arg-1%"
+        broadcast "&c[&6Warning System&c] They now have %{warns.%arg-1's uuid%}% warn(s)."
+        broadcast "&c[&6Warning System&c] Reason: &6%arg-2%"
+        broadcast "&a----------------------------------------------"
+# Checks if warn count is divisible by 5 and if it is, it bans the player
+        {warns.%arg-1's uuid%} is divisible by 5:
+          {warns.%arg-1's uuid%} is not 0:
+            console command "tempban %arg-1% 3h &4&lHaving too many warnings!"
+
+# Unwarn Command
+command /superunwarn <offline player>:
+  permission: warn.sk
+  permission message: &4&lYou do not have permission to use this command!
+  trigger:
+    if arg-1 is set:
+      if {warns.%arg-1's uuid%} is 0:
+        send "&a----------------------------------------------" to player
+        send "&c[&6Warning System&c] You can't have negative warns!" to player
+        send "&a----------------------------------------------" to player
+      if {warns.%arg-1's uuid%} is not 0:
+        remove 1 from {warns.%arg-1's uuid%}
+        broadcast "&a----------------------------------------------"
+        broadcast "&c[&6Warning System&c] &6%player% &cunwarned &6%arg-1%"
+        broadcast "&c[&6Warning System&c] They now have %{warns.%arg-1's uuid%}% warn(s)."
+        broadcast "&a----------------------------------------------"
+
+# Check Warns Command
+command /supercheckwarns <offline player>:
+  permission: warn.sk
+  permission message: &4&lYou do not have permission to use this command!
+  trigger:
+    broadcast "&a----------------------------------------------"
+    broadcast "&c[&6Warning System&c] &6%arg-1% &chas %{warns.%arg-1's uuid%}% &cwarn(s)."
+    broadcast "&a----------------------------------------------"
+
+# Clear Warns Command
+command /superclearwarns <offline player>:
+  permission: warn.sk
+  permission message: &4&lYou do not have permission to use this command!
+  trigger:
+    set {warns.%arg-1's uuid%} to 0
+    broadcast "&a----------------------------------------------"
+    broadcast "&c[&6Warning System&c] &6%player% &chas cleared &6%arg-1%&6's &cwarnings."
+    broadcast "&a----------------------------------------------"
