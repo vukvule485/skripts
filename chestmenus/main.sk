@@ -1,0 +1,12 @@
+command /menu:
+ trigger:
+        open chest with 6 row named "BGen Menu" to player
+        wait 1 tick
+        format slot 13 of player with  named "Exit" to close
+command /profile:
+  trigger:
+        send "--- YOUR PROFILE ---"
+        send "--- Name: %player% ---"
+        send "--- Rank: %player's prefix%"
+        send "--- Kills: %player's kills%"
+        send "------"
